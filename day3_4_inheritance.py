@@ -31,21 +31,41 @@ class BankAccount:
         self.owner = owner
         self.balance = balance
 
-    def __str__(self):
-        return f"BankAccount(Owner: {self.owner}, Balance: {self.balance})"
-
     def deposit(self, amount):
         """ method of base class """
-        self.balance += amount
-        print(f"Deposited {amount}. New balance: {self.balance}")
+        try:
+            amount = float(amount)
+            if amount <= 0:
+                print("Deposit amount must be positive.")
+                return
+            self.balance += amount
+            print(f"Deposited {amount}. New balance: {self.balance}")
+        except TypeError:
+            print("Invalid input. Please enter a numeric value for the deposit amount.")
+        finally:
+            print("Deposit operation completed.")
 
     def withdraw(self, amount):
         """method of base class"""
-        if amount > self.balance:
-            print("Insufficient funds")
-        else:
-            self.balance -= amount
-            print(f"Withdrawn {amount}. New balance: {self.balance}")
+        try:
+            amount = float(amount)
+            if amount <= 0:
+                print("withdrawal amount must be positive.")
+                return
+            if amount > self.balance:
+                print("Insufficient funds")
+            else:
+                self.balance -= amount
+                print(f"Withdrawn {amount}. New balance: {self.balance}")
+        # except TypeError:
+        #     print("Invalid input. Please enter a numeric value for the withdrawal amount.")
+        except ValueError:
+            print("Invalid input. Please enter a valid number for the withdrawal amount.")
+        finally:
+            print("Withdrawal process completed.")
+
+    def __str__(self):
+        return f"BankAccount(Owner: {self.owner}, Balance: {self.balance})"
 
 class SavingsAccount(BankAccount):
     """ derived class of inheritance """
@@ -63,8 +83,9 @@ class SavingsAccount(BankAccount):
     def __str__(self):
         return f"SavingsAccount(Owner: {self.owner}, Balance: {self.balance}, Interest Rate: {self.interest_rate})"
 
-obj_2 = SavingsAccount("Jane Doe", 2000, 0.05)
-obj_2.add_interest()
-print(obj_2)
-withdrawal_amount = int(input("Enter amount to withdraw: "))
-obj_2.withdraw(withdrawal_amount)
+obj_1 = BankAccount("Punj", 1000)
+obj_1.deposit(500)
+obj_1.withdraw(200)
+obj_1.withdraw(5000)
+obj_1.withdraw("hello")
+print(obj_1)
